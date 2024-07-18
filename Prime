@@ -1,4 +1,24 @@
- bool isPrime(lld n) {
+//seive algorithm to check prime
+bool isPrime(lld n) {
+int N=2000010;
+	    vector<bool> isprime(N+1,true);
+	    isprime[0]=isprime[1]=false;
+	    for(int i=2;i*i<=N;i++)
+	    {
+	        if(isprime[i])
+	        {
+	            for(int j=i*i;j<=N;j+=i)
+    	        {
+    	            isprime[j]=false;
+    	        }
+	        }
+	    }
+ return isrime[n];
+}
+
+
+//check number is prime or not
+bool isPrime(lld n) {
     if (n <= 1) return false; // 0 and 1 are not prime numbers
     if (n <= 3) return true; // 2 and 3 are prime numbers
 
