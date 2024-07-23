@@ -23,7 +23,7 @@
     }
 
     
-    //using bfs --> topological sort se
+    //using bfs --> topological sort se   (kahn's algorithm)
     
     bool isCyclic(int V, vector<int> adj[]) {
         vector<int> ind(V,0);
