@@ -1,0 +1,28 @@
+class Solution
+{
+	public:
+	//Function to find the shortest distance of all the vertices
+    //from the source vertex S.
+    vector <int> dijkstra(int V, vector<vector<int>> adj[], int S)
+    {
+        // Code here
+        priority_queue<pair<int , int>>q;
+        q.push({0, S});
+        vector<int> distance(V , INT_MAX);
+        distance[S] = 0;
+        while(!q.empty())
+        {  
+            int dis = q.top().first;
+            int v = q.top().second;
+            
+            q.pop();
+            for(auto &it : adj[v])
+                if(distance[it[0]] > dis+it[1])
+                {
+                    distance[it[0]] = dis+it[1];
+                    q.push({ distance[it[0]] , it[0]});
+                }
+        }
+        return distance;
+    }
+};
