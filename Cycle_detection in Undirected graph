@@ -1,0 +1,70 @@
+    //dsu(union by rank)
+    vector<int> par;
+    vector<int> rank1;
+    int find(int i,vector<int> &par){
+        if(i==par[i]) return i;
+        return par[i]=find(par[i],par);
+    }
+    //Function to merge two nodes a and b.
+    void union_( int a, int b) 
+    {
+        //code here
+        //step 1-finding the parent
+        int par_a=find(a,par);
+        int par_b=find(b,par);
+        
+        //step2 - checking the ranking 
+        if(rank1[par_a]==rank1[par_b]){
+            par[par_b]=par_a;
+            rank1[par_a]++;
+        }
+        if(rank1[par_a]>rank1[par_b]){
+             par[par_b]=par_a;
+        }
+        else{
+            par[par_a]=par_b; 
+        }
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+        par.resize(V);
+        rank1.resize(V);
+        for(int i=0;i<V;i++){
+            par[i]=i;
+            rank1[i]=1;
+        }
+        
+        for(int u=0;u<V;u++){
+            for(auto v:adj[u]){
+                if(u<v){
+                  int par_u=find(u,par);
+                  int par_v=find(v,par);
+                  //break case
+                  if(par[par_u]==par[par_v]) return true;
+                  union_(par_u,par_v);
+              }
+            }
+        }
+        return false;
+    }
+    
+    // using dfs
+    
+     bool isCycleDfs(vector<int> adj[],int u,vector<bool> &visited,int parent){
+         visited[u]=true;
+         for(auto v:adj[u]){
+             if(v==parent) continue; // first check parent tho nhi hai
+             if(visited[v]) return true; // parent nhi hai but visited hai then our case is confirmed
+             if(isCycleDfs(adj,v,visited,u)) return true;
+         }
+         return false;
+     }
+     bool isCycle(int V, vector<int> adj[]) {
+        // Code here
+       
+        vector<bool> visited(V,false);
+        for(int i=0;i<V;i++){
+            if(!visited[i] and isCycleDfs(adj,i,visited,-1)) return true;
+        }
+        return false;
+    }
