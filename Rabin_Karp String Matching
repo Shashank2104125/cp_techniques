@@ -1,0 +1,30 @@
+vector<int> RabinKarp(string pattern, string text){
+            int n=pattern.size(); int m=text.size();
+            long long p=31; 
+            long long pow=31;
+            long long md=1e9+7;
+            long long hash=(pattern[0]-'a')+1;
+            for(int i=1;i<n;i++){
+                hash=(hash +( (pattern[i]-'a'+1)*pow) )%md;
+                pow=(pow*p)%md;
+            }
+            long long dp[m]={0};
+            long long po[m]={0};
+            dp[0]=text[0]-'a'+1;
+            po[0]=1;
+            pow=p;
+            for(int i=1;i<m;i++){
+                dp[i]=(dp[i-1]+ ((text[i]-'a'+1)*pow))%md;
+                po[i]=pow;
+                pow=(pow*p)%md;
+            }
+            vector<int> ans;
+            int sp=0; int ep=n-1;
+            while(ep<m){
+                 long long win=dp[ep];
+                 if(sp>0) win=(win-dp[sp-1]+md)%md;
+                 if(win == (hash*po[sp])%md) ans.push_back(sp+1);
+                 sp++; ep++;
+            }
+            return ans;
+        }
