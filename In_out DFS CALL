@@ -1,0 +1,63 @@
+typedef long long int ll;
+
+class Solution {
+    vector<vector<int>> g;
+    vector<ll> prices;
+    vector<ll> max_in, max_out;
+    
+    ll InDfs (int src, int par) {
+        ll& result = max_in[src];
+        
+        for (auto i : g[src]) {
+            if (i == par) continue;
+            result = max(result, InDfs (i, src));
+        }
+        result += prices[src];
+        
+        return result;
+    }
+    
+    void OutDfs (int src, int par) {
+        // can be optimised by calculating the first & second max
+        multiset<ll> in_of_all;
+        for (auto i : g[src]) {
+            if (i == par) continue;
+            in_of_all.insert(max_in[i]);
+        }
+        
+        for (auto i : g[src]) {
+            if (i == par) continue;
+            ll cur_val = max_in[i];
+            
+            in_of_all.erase (in_of_all.find(cur_val));
+            
+            ll below = in_of_all.empty()? 0 : *(--in_of_all.end());
+            max_out[i] = max (below, max_out[src]) + prices[src];
+            
+            in_of_all.insert (cur_val);
+            OutDfs (i, src);
+        }
+    }
+    
+public:
+    long long maxOutput(int n, vector<vector<int>>& edges, vector<int>& price) {
+        g.clear(), prices.clear(), max_in.clear(), max_out.clear();
+        g.resize(n), prices.resize(n), max_in.resize(n), max_out.resize(n);
+        for (auto e : edges) {
+            g[e[0]].push_back(e[1]);
+            g[e[1]].push_back(e[0]);
+        }
+        for (int j = 0; j < n; j ++) prices[j] = price[j];
+        
+        InDfs (0, -1);
+        OutDfs (0, -1);
+        
+        ll result = 0;
+        for (int root = 0; root < n; root ++) {
+            ll val = max (max_in[root], max_out[root]+prices[root]) - prices[root];
+            result = max (result, val);
+        }
+        
+        return result;
+    }
+};
