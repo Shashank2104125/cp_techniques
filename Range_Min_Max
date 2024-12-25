@@ -1,0 +1,15 @@
+pair<int,int> getOneRange(vector<int>& a){
+    lli mn=0,mx=0,c=0;
+    lli L=0,R=0;
+    for(const auto &x:a){
+        c+=x;
+        L=min(L,c-mx);
+        R=max(R,c-mn);
+        mn=min(mn,c);
+        mx=max(mx,c);
+    }
+    return {L,R};
+}
+
+//vector<int> a={-1,-1,-1,-1,1}
+//output={-4,1}
