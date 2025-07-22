@@ -1,0 +1,61 @@
+1. Top-Down vs. Bottom-Up
+🔹 Memoization (recursion + cache)
+🔹 Tabulation (iterative table filling)
+
+2. Space-Saving Strategies
+🔹 Rolling arrays: Keep only the last one or two rows (or dimensions) of your DP table.
+🔹 Bitsets: Pack small states into bit operations for ultra-fast transitions.
+
+3. Prefix-Sum & Difference Tricks
+🔹 Precompute cumulative sums to reduce O(N) transition loops to O(1).
+🔹 Use difference arrays for range-update patterns in DP.
+
+4. Monotonic Queue / Sliding Window
+🔹 For “min/max over last K states” problems, maintain a deque of candidates in amortized O(1) per update.
+
+5. Bitmask & SOS-DP
+🔹 Bitmask DP for subsets of up to ~20 elements (2ⁿ states).
+🔹 SOS (Sum Over Subsets) DP to compute functions on all subsets via fast zeta transforms.
+
+6. Segment-Tree-Backed DP
+🔹 Use a segment tree (or Fenwick tree) to answer range min/max queries or do range updates on your DP array in O(log N).
+🔹 Merge DP states efficiently when you need non-trivial transitions over intervals.
+
+7. 1D/1D (Monge or Quadrangle-Inequality) Optimization
+🔹 Targets recurrences of the form
+
+dp[i] = min_{0 ≤ j < i} [dp[j] + w(j, i)]
+
+where w satisfies the quadrangle (Monge) inequality, so the argmin indices k(i) are non-decreasing.
+🔹 Use divide-and-conquer to compute all dp[i] in O(N log N), or Knuth’s optimization to push it to O(N) when stronger conditions hold .
+
+8. Divide-and-Conquer Optimization
+🔹 A special case of 1D/1D when optimal split points are monotonic: drop O(N²) down to O(N log N) by recursively solving on segments and narrowing search ranges.
+
+9. Knuth / Quadrangle Inequality
+🔹 When cost functions satisfy the quadrangle inequality and boundary conditions, you can reduce range-DP from O(N³) to O(N²) (or even to O(N) in certain forms).
+
+10. Convex Hull Trick & Li Chao Tree
+🔹 Optimize linear recurrences of the form
+
+dp[i] = min_j [m_j * x_i + b_j]
+
+from O(N²) to O(N log N) (or O(N) with a monotonic hull).
+
+11. FFT-Based Convolution
+🔹 Use fast polynomial multiplication (FFT) to merge DP steps in O(N log N) instead of O(N²).
+
+12. Matrix Exponentiation / Chain Exponentiation
+🔹 Model linear recurrences as
+
+dp_vec[i] = M * dp_vec[i−1]
+
+Raise the transition matrix M to the nᵗʰ power in O(k³ log n) (or faster) to compute dp[n] in logarithmic time.
+
+13. Berlekamp–Massey Algorithm
+🔹 Given the first 2k terms of a sequence, extract its minimal linear recurrence in O(k²).
+🔹 Combine with fast exponentiation to compute the nᵗʰ term in O(k² log n), even for very large n.
+
+14. Slope Trick & Aliens’ Tricks
+🔹 Handle piecewise-linear DP functions and complex cost updates by maintaining envelopes of slopes.
+🔹 Ideal for “add a V-shaped penalty” or “minimize sum of absolute deviations plus a quadratic cost.”
